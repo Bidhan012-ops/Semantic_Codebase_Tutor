@@ -1,82 +1,99 @@
-// Don't forget to add GITHUB_TOKEN to your .env.local file if you hit rate limits!
-const ALLOWED_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".md"]; 
+// Don't forget to add this to your .env.local file!
+// GITHUB_TOKEN=your_personal_access_token_here
 
+// For Version 1, we are intentionally limiting this to JavaScript/TypeScript 
+// and Markdown files to keep chunking simple and avoid token limits.
+import { repomap } from "./repomap";
+const ALLOWED_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".md"];
+let currentgithubupdate: Date;
 export async function fetchRepoFiles(owner: string, repo: string) {
-  const headers: HeadersInit = {
-    Accept: "application/vnd.github.v3+json",
-  };
+    const headers = {
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        Accept: "application/vnd.github.v3+json",
+    };
 
-  // Only add Authorization header if GITHUB_TOKEN is defined
-  if (process.env.GITHUB_TOKEN) {
-    headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
-  }
-
-  try {
-    // 1. Get the default branch
-    const repoDataRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
-    
-    if (!repoDataRes.ok) {
-        throw new Error(`Failed to fetch repo data: ${repoDataRes.statusText} (${repoDataRes.status})`);
-    }
-    
-    const repoData = await repoDataRes.json();
-    const defaultBranch = repoData.default_branch;
-
-    // 2. Get the full file tree recursively
-    const treeRes = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/git/trees/${defaultBranch}?recursive=1`,
-      { headers }
-    );
-    
-    if (!treeRes.ok) {
-        throw new Error(`Failed to fetch tree: ${treeRes.statusText} (${treeRes.status})`);
-    }
-    
-    const treeData = await treeRes.json();
-
-    if (!treeData.tree) {
-        throw new Error("Could not retrieve repository tree.");
-    }
-
-    // 3. Filter for valid code files
-    const validFiles = treeData.tree.filter((item: any) => {
-      if (item.type !== "blob") return false; 
-      
-      const lastDotIndex = item.path.lastIndexOf(".");
-      if (lastDotIndex === -1) return false; // Skip files without extensions
-      
-      const extension = item.path.substring(lastDotIndex).toLowerCase();
-      return ALLOWED_EXTENSIONS.includes(extension);
-    });
-
-    // 4. Fetch the raw content for each file
-    const fileContents = await Promise.all(
-      validFiles.map(async (file: any) => {
-        // We do NOT send our GITHUB_TOKEN to raw.githubusercontent.com as it can cause authentication rejection
-        const rawRes = await fetch(
-          `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/${file.path}`
-        );
-        
-        if (!rawRes.ok) {
-          return {
-            path: file.path,
-            content: `// Error loading file contents: ${rawRes.statusText}`,
-          };
+    try {
+        // 1. Get the default branch (it's not always 'main', sometimes it's 'master')
+        const repoDataRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
+        if (!repoDataRes.ok) {
+            throw new Error(`Failed to fetch repo: ${repoDataRes.statusText}`);
         }
-        
-        const content = await rawRes.text();
 
-        return {
-          path: file.path,
-          content: content,
-        };
-      })
-    );
+        const repoData = await repoDataRes.json();
+        const defaultBranch = repoData.default_branch;
+        currentgithubupdate = new Date(repoData.pushed_at);
+        // 2. Get the full file tree recursively
+        // The "?recursive=1" parameter tells GitHub to open all folders inside folders
+        const treeRes = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}/git/trees/${defaultBranch}?recursive=1`,
+            { headers }
+        );
+        const treeData = await treeRes.json();
 
-    return fileContents;
+        if (!treeData.tree) {
+            throw new Error("Could not retrieve repository tree.");
+        }
 
-  } catch (error) {
-    console.error("Error in fetchRepoFiles:", error);
-    throw error;
-  }
+        // ==========================================
+        // NEW REPO MAP LOGIC
+        // ==========================================
+        // Extract every single file (blob) to build the complete repository architecture map
+        const allFilePaths = treeData.tree
+            .filter((item: any) => item.type === "blob")
+            .map((item: any) => `- ${item.path}`);
+
+        const repoMapContent = allFilePaths.join("\n");
+
+
+        await repomap(repoMapContent);
+
+        const validFiles = treeData.tree.filter((item: any) => {
+            // "blob" means it is a file. "tree" means it is a directory. We only want files.
+            if (item.type !== "blob") return false;
+
+            const extension = item.path.substring(item.path.lastIndexOf("."));
+            return ALLOWED_EXTENSIONS.includes(extension);
+        });
+
+        // 4. Fetch the raw content for each file in chunks to avoid connection timeouts
+        const fileContents = [];
+        const CHUNK_SIZE = 50; // Process 50 files at a time
+
+        for (let i = 0; i < validFiles.length; i += CHUNK_SIZE) {
+            const chunk = validFiles.slice(i, i + CHUNK_SIZE);
+
+            const chunkResults = await Promise.all(
+                chunk.map(async (file: any) => {
+                    const rawRes = await fetch(
+                        `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/${file.path}`,
+                        { headers } // Adding headers here too just in case of rate limits
+                    );
+
+                    if (!rawRes.ok) return null; // Handle missing or large files gracefully
+
+                    const content = await rawRes.text();
+                    return {
+                        path: file.path,
+                        content: content,
+                    };
+                })
+            );
+
+            fileContents.push(...chunkResults.filter(Boolean));
+
+            // Small 100ms delay to give the event loop and network sockets time to breathe
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        console.log("The filecontets are:", fileContents);
+        return fileContents;
+
+    } catch (error) {
+        console.error("Error in fetchRepoFiles:", error);
+        throw error; // Re-throw the error so the API route can catch it and send a 500 status
+    }
+}
+export async function findupdate() {
+    console.log(`This repo is last updated at ${currentgithubupdate}`)
+    return currentgithubupdate;
 }
