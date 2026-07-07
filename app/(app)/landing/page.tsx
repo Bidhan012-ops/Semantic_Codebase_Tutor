@@ -9,6 +9,7 @@ export default function Landing() {
   const { data: session, update } = useSession();
   const [repoUrl, setRepoUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
 
   const handleIngest = async (e: React.FormEvent) => {
@@ -41,9 +42,14 @@ export default function Landing() {
       <style dangerouslySetInnerHTML={{
         __html: `
         @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
         .font-serif { font-family: 'Source Serif 4', serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
         
         .industrial-border {
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -62,6 +68,12 @@ export default function Landing() {
             background-size: 100% 4px;
             pointer-events: none;
         }
+        
+        @keyframes profile-shimmer {
+            100% {
+                transform: translateX(200%);
+            }
+        }
       `}} />
 
       {/* Background Decorations */}
@@ -79,13 +91,44 @@ export default function Landing() {
         BUILD_HASH: 0x8F42A_SECURE
       </div>
 
-      {/* Sign Out Button */}
-      <button
-        onClick={() => signOut({ callbackUrl: "/" })}
-        className="fixed top-8 right-8 z-30 font-mono text-[10px] uppercase tracking-widest text-[#666666] hover:text-[#f08c00] transition-colors border border-transparent hover:border-[#f08c00]/30 px-3 py-1.5 rounded-none"
-      >
-        Sign Out
-      </button>
+      {/* User Profile / Sign Out */}
+      <div className="fixed top-8 right-8 z-40">
+        <button
+          onClick={() => setIsProfileOpen(!isProfileOpen)}
+          className="group relative font-mono text-[10px] uppercase tracking-widest text-[#888888] hover:text-[#f08c00] transition-all duration-300 border border-[#333333] hover:border-[#f08c00]/50 bg-[#131313] px-4 py-2 flex items-center gap-3 overflow-hidden shadow-[0_0_15px_rgba(240,140,0,0.05)] hover:shadow-[0_0_20px_rgba(240,140,0,0.15)]"
+        >
+          {/* Subtle scanning line effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f08c00]/10 to-transparent -translate-x-[200%] group-hover:animate-[profile-shimmer_2s_infinite] pointer-events-none"></div>
+          
+          {/* Glowing Status Dot */}
+          <div className="relative flex h-2 w-2 flex-shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f08c00] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#f08c00]"></span>
+          </div>
+
+          <span className="relative z-10 truncate max-w-[120px]">{session?.user?.username || session?.user?.name || session?.user?.email || "USER_PROFILE"}</span>
+          
+          <span className="material-symbols-outlined text-[14px] relative z-10 transition-transform duration-300 flex-shrink-0">
+            {isProfileOpen ? "expand_less" : "expand_more"}
+          </span>
+        </button>
+        
+        {isProfileOpen && (
+          <div className="absolute right-0 mt-2 w-64 bg-[#131313] industrial-border shadow-2xl p-4 animate-in fade-in slide-in-from-top-2 duration-200">
+             <div className="mb-4 pb-4 border-b border-[#333333]">
+                <div className="font-serif font-bold text-[#e5e2e1] truncate text-sm">{session?.user?.username || session?.user?.name || "Username"}</div>
+                <div className="font-mono text-[10px] text-[#888888] tracking-widest mt-1 truncate">{session?.user?.email}</div>
+             </div>
+             <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="w-full text-left font-mono text-[10px] uppercase tracking-widest text-[#f08c00] hover:text-[#ff9d14] hover:bg-[#1a1a1a] transition-colors px-3 py-2 flex items-center gap-2 border border-transparent hover:border-[#f08c00]/30"
+             >
+                <span className="material-symbols-outlined text-[14px]">logout</span>
+                TERMINATE_SESSION
+             </button>
+          </div>
+        )}
+      </div>
 
       {/* Onboarding Portal */}
       <main className="relative z-20 flex-grow flex items-center justify-center px-6">

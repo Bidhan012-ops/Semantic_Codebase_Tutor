@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 export default function LandingPage() {
   const heroRef = useRef<HTMLElement>(null);
 
-  // Replaces the vanilla JS mousemove effect for the subtle radial gradient background
+  // Subtle radial gradient background effect
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -14,7 +14,7 @@ export default function LandingPage() {
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
-      hero.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(240, 140, 0, 0.03) 0%, transparent 50%), #0D0D0D`;
+      hero.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(240, 140, 0, 0.04) 0%, transparent 50%), #0D0D0D`;
     };
 
     hero.addEventListener("mousemove", handleMouseMove);
@@ -23,42 +23,51 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D] text-[#e5e2e1] font-sans selection:bg-[#f08c00]/30 selection:text-white">
-      {/* Required Fonts & Custom Micro-Classes from your HTML */}
       <style dangerouslySetInnerHTML={{
         __html: `
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..144,400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..144,400;600;700;800&family=Geist:wght@400;500;600&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
         .font-serif { font-family: 'Source Serif 4', serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-sans { font-family: 'Geist', sans-serif; }
         
-        .amber-gradient { background: linear-gradient(180deg, #F08C00 0%, #D47A00 100%); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2); }
+        .amber-gradient { background: linear-gradient(180deg, #F08C00 0%, #C46A00 100%); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2); }
+        .copper-accent { color: #D47A00; }
         .industrial-border { border: 1px solid #2A2A2A; }
-        .micro-shadow { box-shadow: 0 4px 20px -2px rgba(0,0,0,0.5); }
+        .micro-shadow { box-shadow: 0 8px 32px -4px rgba(0,0,0,0.6); }
         .rim-light { border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        
+        .glow-effect { position: relative; }
+        .glow-effect::before {
+            content: ''; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
+            background: linear-gradient(45deg, #F08C00, transparent, #C46A00);
+            z-index: -1; border-radius: inherit; opacity: 0.15; transition: opacity 0.3s ease;
+        }
+        .glow-effect:hover::before { opacity: 0.4; }
       `}} />
 
-      {/* TopNavBar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0D0D0D]/95 backdrop-blur-md border-b border-[#2A2A2A]/30">
-        <div className="flex justify-between items-center w-full px-6 md:px-16 py-4 max-w-[1440px] mx-auto h-20">
-          <div className="flex items-center gap-4">
-            <div className="bg-[#f08c00] p-2 rounded-lg flex items-center justify-center amber-gradient">
-              <span className="material-symbols-outlined text-[#593000]" style={{ fontVariationSettings: "'FILL' 1" }}>terminal</span>
+      {/* Top Navigation Bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0D0D0D]/90 backdrop-blur-xl border-b border-[#2A2A2A]/40">
+        <div className="flex justify-between items-center w-full px-6 md:px-12 py-4 max-w-[1440px] mx-auto h-20">
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="bg-[#f08c00] p-1.5 rounded-md flex items-center justify-center amber-gradient transition-transform group-hover:scale-105">
+              <span className="material-symbols-outlined text-[#3A1D00] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>account_tree</span>
             </div>
-            <span className="font-serif text-2xl font-bold text-[#e5e2e1]">SemanticTutor</span>
+            <span className="font-serif text-2xl font-bold text-[#e5e2e1] tracking-tight">SemanticTutor</span>
           </div>
-          <div className="hidden md:flex items-center gap-16">
-            <Link className="text-[#b7b5b4] hover:text-[#e5e2e1] transition-colors text-base" href="#features">Features</Link>
-            <Link className="text-[#b7b5b4] hover:text-[#e5e2e1] transition-colors text-base" href="#architecture">Architecture</Link>
-            <Link className="text-[#b7b5b4] hover:text-[#e5e2e1] transition-colors text-base" href="#">Pricing</Link>
+          <div className="hidden md:flex items-center gap-10">
+            <Link className="font-sans text-sm font-medium text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#features">Features</Link>
+            <Link className="font-sans text-sm font-medium text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#architecture">Architecture</Link>
+            <Link className="font-sans text-sm font-medium text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#">Pricing</Link>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/signin" className="px-4 py-2 font-mono text-xs uppercase tracking-widest text-[#b7b5b4] hover:text-[#e5e2e1] transition-colors">
+          <div className="flex items-center gap-6">
+            <Link href="/signin" className="hidden sm:block font-sans text-sm font-medium text-[#b7b5b4] hover:text-[#e5e2e1] transition-colors">
               Sign In
             </Link>
-            <Link href="/signup" className="px-6 py-3 bg-[#f08c00] text-[#593000] font-mono text-xs uppercase tracking-widest amber-gradient rounded-lg transition-transform hover:-translate-y-[2px] active:scale-95">
-              Get Started
+            <Link href="/signup" className="px-6 py-2.5 bg-[#f08c00] text-[#3A1D00] font-sans font-semibold text-sm amber-gradient rounded-md shadow-[0_0_15px_rgba(240,140,0,0.2)] transition-all hover:shadow-[0_0_20px_rgba(240,140,0,0.4)] hover:-translate-y-0.5 active:scale-95">
+              GET STARTED
             </Link>
           </div>
         </div>
@@ -68,207 +77,334 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 py-16 overflow-hidden"
-          style={{ background: "radial-gradient(circle at 50% 50%, rgba(240, 140, 0, 0.03) 0%, transparent 50%), #0D0D0D" }}
+          className="relative min-h-[90vh] flex flex-col items-center pt-24 pb-16 px-6 overflow-hidden"
+          style={{ background: "radial-gradient(circle at 50% 30%, rgba(240, 140, 0, 0.05) 0%, transparent 60%), #0D0D0D" }}
         >
-          {/* Subtle Grid Pattern */}
-          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(#2A2A2A 1px, transparent 1px)", backgroundSize: "24px 24px" }}></div>
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(#F08C00 1px, transparent 1px), linear-gradient(90deg, #F08C00 1px, transparent 1px)", backgroundSize: "40px 40px" }}></div>
 
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-[#f08c00]/20 bg-[#f08c00]/5 rounded-full mb-10">
-              <span className="w-2 h-2 rounded-full bg-[#F08C00] animate-pulse"></span>
-              <span className="font-mono text-xs font-medium text-[#F08C00] uppercase tracking-widest">Now powered by Gemini 1.5 Flash</span>
+          <div className="relative z-10 w-full max-w-5xl mx-auto text-center flex flex-col items-center">
+            
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 border border-[#F08C00]/20 bg-[#F08C00]/5 rounded-full mb-8 backdrop-blur-sm">
+              <div className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F08C00] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F08C00]"></span>
+              </div>
+              <span className="font-mono text-xs font-semibold text-[#F08C00] tracking-wide">Gemini 1.5 Semantic Engine</span>
             </div>
 
-            <h1 className="font-serif text-[64px] leading-tight md:text-[84px] text-[#e5e2e1] mb-6 font-bold">
-              Master any codebase with<br />
-              <span className="text-[#F08C00] font-extrabold italic">Semantic Intelligence.</span>
+            <h1 className="font-serif text-5xl md:text-[72px] leading-[1.1] text-[#e5e2e1] mb-6 font-bold tracking-tight">
+              Master any codebase with <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F08C00] to-[#C46A00] italic pr-2">Semantic Intelligence.</span>
             </h1>
 
-            <p className="text-lg text-[#b7b5b4] max-w-2xl mx-auto mb-16 leading-relaxed">
-              Connect your repository and instantly chat with your architecture. Powered by advanced Vector Search, designed for senior engineers.
+            <p className="font-sans text-lg md:text-xl text-[#a3a1a0] max-w-2xl mx-auto mb-12 leading-relaxed">
+              Instantly chat with your architecture. We transform raw code into an interactive knowledge graph, engineered for senior development teams.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/signup" className="amber-gradient flex items-center justify-center gap-2 px-10 py-5 rounded-lg text-[#593000] font-mono text-xs uppercase tracking-widest transition-transform hover:-translate-y-[2px] active:scale-95 micro-shadow">
-                <span>Connect Repository</span>
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </Link>
-              <Link href="#architecture" className="bg-[#1A1A1A] industrial-border flex items-center justify-center gap-2 px-10 py-5 rounded-lg text-[#e5e2e1] font-mono text-xs uppercase tracking-widest hover:bg-[#222222] transition-all hover:-translate-y-[2px] rim-light">
-                <span className="material-symbols-outlined">account_tree</span>
-                <span>View Architecture</span>
-              </Link>
-            </div>
-          </div>
+            {/* High-Fidelity Code Editor Mockup */}
+            <div className="w-full max-w-[1000px] border border-[#2A2A2A] rounded-xl overflow-hidden micro-shadow rim-light bg-[#121212] flex flex-col text-left glow-effect mt-4">
+              {/* Editor Header */}
+              <div className="h-12 border-b border-[#2A2A2A] flex items-center justify-between px-4 bg-[#0A0A0A]">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#4A4A4A]"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#4A4A4A]"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#4A4A4A]"></div>
+                </div>
+                <div className="flex items-center gap-2 bg-[#1A1A1A] px-4 py-1 rounded border border-[#2A2A2A]">
+                  <span className="material-symbols-outlined text-[14px] text-[#F08C00]">lock</span>
+                  <span className="font-mono text-[11px] text-[#8a8887]">src/engine/semantic_layer.py</span>
+                </div>
+                <div className="w-12"></div> {/* Spacer for balance */}
+              </div>
+              
+              {/* Editor Body */}
+              <div className="flex h-[380px]">
+                {/* File Browser Sidebar */}
+                <div className="w-48 border-r border-[#2A2A2A] bg-[#0A0A0A] p-4 hidden md:block">
+                  <span className="font-sans text-[10px] font-bold text-[#666] uppercase tracking-widest mb-4 block">Explorer</span>
+                  <div className="space-y-2 font-mono text-xs text-[#8a8887]">
+                    <div className="flex items-center gap-2 text-[#e5e2e1]"><span className="material-symbols-outlined text-[14px] text-[#F08C00]">folder_open</span> src/</div>
+                    <div className="flex items-center gap-2 pl-4"><span className="material-symbols-outlined text-[14px]">folder</span> api/</div>
+                    <div className="flex items-center gap-2 pl-4 text-[#e5e2e1]"><span className="material-symbols-outlined text-[14px] text-[#F08C00]">folder_open</span> engine/</div>
+                    <div className="flex items-center gap-2 pl-8 text-[#F08C00] bg-[#F08C00]/10 py-1 -mx-2 px-2 rounded"><span className="material-symbols-outlined text-[14px]">description</span> semantic_layer.py</div>
+                    <div className="flex items-center gap-2 pl-8"><span className="material-symbols-outlined text-[14px]">description</span> vector_store.ts</div>
+                    <div className="flex items-center gap-2 pl-4"><span className="material-symbols-outlined text-[14px]">folder</span> utils/</div>
+                  </div>
+                </div>
 
-          {/* Dashboard Mockup/Visual */}
-          <div className="mt-16 w-full max-w-[1200px] border border-[#2A2A2A]/30 rounded-xl overflow-hidden micro-shadow rim-light bg-[#1c1b1b] relative z-10 text-left">
-            <div className="h-10 border-b border-[#2A2A2A]/30 flex items-center px-4 gap-2 bg-[#1A1A1A]">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#ffb4ab]/60"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-[#ffb874]/60"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-[#c7c6c6]/60"></div>
-              <div className="ml-4 font-mono text-xs text-[#b7b5b4] opacity-50">src/engine/semantic_layer.py</div>
-            </div>
-            <div className="p-10 bg-[#080808]">
-              <pre className="font-mono text-sm leading-relaxed text-[#b7b5b4]/80 overflow-x-auto">
-                <code>
-                  <span className="text-[#F08C00]">class</span> <span className="text-[#c8c6c5]">SemanticEngine</span>:<br />
-                  {"    "}<span className="text-[#F08C00]">async def</span> <span className="text-[#c8c6c5]">analyze_context</span>(self, query: str):<br />
-                  {"        "}<span className="text-[#c7c6c6]"># Initializing vector search on architecture</span><br />
-                  {"        "}embeddings = <span className="text-[#F08C00]">await</span> self.vector_store.similarity_search(query)<br />
-                  {"        "}<span className="text-[#F08C00]">return</span> self.llm.generate(context=embeddings)
-                </code>
-              </pre>
+                {/* Code Area */}
+                <div className="flex-1 bg-[#121212] p-6 overflow-hidden relative">
+                  <div className="absolute top-0 bottom-0 left-0 w-10 border-r border-[#2A2A2A]/50 bg-[#0A0A0A]/50 text-right pr-2 pt-6 font-mono text-xs text-[#4A4A4A] select-none">
+                    1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9
+                  </div>
+                  <pre className="font-mono text-[13px] leading-[1.7] text-[#c8c6c5] pl-8">
+                    <code>
+                      <span className="text-[#8a8887]"># Core logic for architectural understanding</span><br/>
+                      <span className="text-[#D47A00]">import</span> asyncio<br/>
+                      <span className="text-[#D47A00]">from</span> core.vector <span className="text-[#D47A00]">import</span> SearchClient<br/><br/>
+                      <span className="text-[#F08C00] font-bold">class</span> <span className="text-[#e5e2e1]">SemanticEngine</span>:<br />
+                      {"    "}<span className="text-[#8a8887]">@tracer.capture_metrics</span><br/>
+                      {"    "}<span className="text-[#F08C00] font-bold">async def</span> <span className="text-[#e5e2e1]">analyze_context</span>(self, query: str, repo_id: str):<br />
+                      {"        "}embeddings = <span className="text-[#F08C00] font-bold">await</span> self.vector_store.search(query, filter=repo_id)<br />
+                      {"        "}<span className="text-[#F08C00] font-bold">return</span> self.llm.synthesize(context=embeddings)
+                    </code>
+                  </pre>
+                  
+                  {/* Floating Architectural Graph Overlay */}
+                  <div className="absolute bottom-6 right-6 w-64 h-48 bg-[#0A0A0A]/80 backdrop-blur border border-[#2A2A2A] rounded-lg p-4 hidden lg:flex flex-col micro-shadow">
+                    <span className="font-sans text-[10px] font-bold text-[#666] uppercase tracking-widest mb-3">Live Graph Generation</span>
+                    <div className="flex-1 relative">
+                       {/* Node 1 */}
+                       <div className="absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full border border-[#F08C00] bg-[#F08C00]/20 flex items-center justify-center shadow-[0_0_10px_rgba(240,140,0,0.3)] z-10"></div>
+                       {/* Node 2 & 3 */}
+                       <div className="absolute top-16 left-6 w-5 h-5 rounded-full border border-[#8a8887] bg-[#2A2A2A] z-10"></div>
+                       <div className="absolute top-16 right-6 w-5 h-5 rounded-full border border-[#8a8887] bg-[#2A2A2A] z-10"></div>
+                       {/* Node 4 */}
+                       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded border border-[#D47A00] bg-[#D47A00]/20 z-10"></div>
+                       
+                       {/* Lines */}
+                       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
+                         <line x1="50%" y1="20" x2="20%" y2="70" stroke="#F08C00" strokeWidth="1.5" strokeDasharray="4" />
+                         <line x1="50%" y1="20" x2="80%" y2="70" stroke="#F08C00" strokeWidth="1.5" />
+                         <line x1="20%" y1="70" x2="50%" y2="130" stroke="#8a8887" strokeWidth="1" />
+                         <line x1="80%" y1="70" x2="50%" y2="130" stroke="#8a8887" strokeWidth="1" />
+                       </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Precision Engineering Section (Bento Grid) */}
-        <section id="features" className="py-24 px-6 max-w-[1440px] mx-auto border-t border-[#2A2A2A]/20">
-          <div className="text-center mb-16">
-            <h2 className="font-serif text-3xl font-bold mb-3">Engineered for Precision</h2>
-            <p className="text-base text-[#b7b5b4] max-w-xl mx-auto">We don't just search text. We understand the mathematical context of your code.</p>
+        {/* Engineered for Precision Section */}
+        <section id="features" className="py-32 px-6 max-w-[1440px] mx-auto border-t border-[#2A2A2A]/20">
+          <div className="text-center mb-20">
+            <h2 className="font-serif text-4xl font-bold mb-4 text-[#e5e2e1]">Engineered for Precision</h2>
+            <p className="font-sans text-lg text-[#8a8887] max-w-2xl mx-auto">
+              We don't just search text. Our engine parses the mathematical and architectural context of your code.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {/* Large Feature Card */}
-            <div className="md:col-span-8 bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-10 flex flex-col justify-between micro-shadow rim-light">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+            {/* Deep Structural Analysis Card */}
+            <div className="lg:col-span-8 bg-[#121212] border border-[#2A2A2A] rounded-2xl p-10 flex flex-col justify-between micro-shadow rim-light group hover:border-[#4A4A4A] transition-colors">
               <div>
-                <div className="bg-[#222222] w-12 h-12 rounded-lg flex items-center justify-center border border-[#2A2A2A]/50 mb-6">
-                  <span className="material-symbols-outlined text-[#F08C00]">analytics</span>
+                <div className="bg-[#1A1A1A] w-14 h-14 rounded-xl flex items-center justify-center border border-[#2A2A2A] mb-8 shadow-inner">
+                  <span className="material-symbols-outlined text-[#F08C00] text-3xl">account_tree</span>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">Deep Structural Analysis</h3>
-                <p className="text-base text-[#b7b5b4] max-w-md leading-relaxed">Our engine parses abstract syntax trees (AST) to build a relational map of your entire codebase, ensuring high-fidelity reasoning across complex module dependencies.</p>
+                <h3 className="font-sans text-3xl font-semibold mb-4 text-[#e5e2e1]">Deep Structural Analysis</h3>
+                <p className="font-sans text-base text-[#a3a1a0] max-w-xl leading-relaxed mb-10">
+                  By constructing an Abstract Syntax Tree (AST) combined with high-dimensional vector embeddings, the engine understands relationships across distant files, modules, and dependencies.
+                </p>
               </div>
-              <div className="mt-10 pt-10 border-t border-[#2A2A2A]/20 grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="font-mono text-[#F08C00] text-xl font-bold mb-2">99.2%</div>
-                  <div className="font-mono text-[#b7b5b4] text-[10px] uppercase tracking-widest">Accuracy</div>
+              
+              {/* Performance Metrics Chips */}
+              <div className="flex flex-wrap gap-4 mt-auto">
+                <div className="flex items-center gap-2 bg-[#F08C00]/10 text-[#F08C00] border border-[#F08C00]/20 rounded-full px-4 py-1.5 font-mono text-[13px] font-medium shadow-sm">
+                  <span className="material-symbols-outlined text-[16px]">done_all</span> 99.2% Accuracy
                 </div>
-                <div className="text-center">
-                  <div className="font-mono text-[#F08C00] text-xl font-bold mb-2">&lt;200ms</div>
-                  <div className="font-mono text-[#b7b5b4] text-[10px] uppercase tracking-widest">Latency</div>
+                <div className="flex items-center gap-2 bg-[#1A1A1A] text-[#e5e2e1] border border-[#2A2A2A] rounded-full px-4 py-1.5 font-mono text-[13px] font-medium shadow-sm">
+                  <span className="material-symbols-outlined text-[16px] text-[#D47A00]">bolt</span> &lt;200ms Latency
                 </div>
-                <div className="text-center">
-                  <div className="font-mono text-[#F08C00] text-xl font-bold mb-2">5M+</div>
-                  <div className="font-mono text-[#b7b5b4] text-[10px] uppercase tracking-widest">LoC Scanned</div>
+                <div className="flex items-center gap-2 bg-[#1A1A1A] text-[#e5e2e1] border border-[#2A2A2A] rounded-full px-4 py-1.5 font-mono text-[13px] font-medium shadow-sm">
+                  <span className="material-symbols-outlined text-[16px] text-[#D47A00]">database</span> 331+ LOC Scanned
                 </div>
-              </div>
-            </div>
-
-            {/* Side Feature Card */}
-            <div className="md:col-span-4 bg-[#1c1b1b] border border-[#2A2A2A] rounded-xl p-10 flex flex-col micro-shadow rim-light">
-              <div className="bg-[#222222] w-12 h-12 rounded-lg flex items-center justify-center border border-[#2A2A2A]/50 mb-6">
-                <span className="material-symbols-outlined text-[#c8c6c5]">shield</span>
-              </div>
-              <h3 className="text-2xl font-semibold mb-4">Industrial Security</h3>
-              <p className="text-base text-[#b7b5b4] mb-6 leading-relaxed">Your code stays yours. SOC2 Type II compliant with end-to-end encryption for every query and data point.</p>
-              <div className="mt-auto">
-                <img
-                  className="w-full h-32 object-cover rounded border border-[#2A2A2A]/30"
-                  alt="A professional, high-tech security badge or encrypted data shield icon rendered in a sleek, dark industrial style with metallic textures and glowing amber accents."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG8gWlRA6dMytC-hO7DuV1VifXWe-8rRmc8NVlyzH2R9y-BIiBCKwuqwBwetl_UoNTgvNnOTQPwQIQDJW2baj1Y2DGiTj77TgYSDWhNzsR8Tel50O07WA7SuxQden5n9aZw_F5x-81FcPdsDr1pVyfFpVDvcuyPH4gGUL6evhut39DsiXHGegiJ4tkyZPjFVrHZyt18vQl2njizN3PkTan2xfvqIPJ7XoeHBnLQWfAmu4w9smaj8Q9"
-                />
               </div>
             </div>
 
-            {/* Bottom Row Cards */}
-            <div className="md:col-span-4 bg-[#1c1b1b] border border-[#2A2A2A] rounded-xl p-10 micro-shadow rim-light">
-              <span className="material-symbols-outlined text-[#F08C00] mb-4 text-3xl">cloud_sync</span>
-              <h4 className="font-mono text-xs font-medium text-[#e5e2e1] mb-3 uppercase tracking-widest">Live Sync</h4>
-              <p className="font-mono text-xs text-[#b7b5b4] leading-relaxed">Continuous updates as you push code. The knowledge base evolves with your repository in real-time.</p>
+            {/* Industrial Security Card */}
+            <div className="lg:col-span-4 bg-[#121212] border border-[#2A2A2A] rounded-2xl p-10 flex flex-col micro-shadow rim-light group hover:border-[#4A4A4A] transition-colors overflow-hidden relative">
+              <div className="relative z-10">
+                <div className="bg-[#1A1A1A] w-14 h-14 rounded-xl flex items-center justify-center border border-[#2A2A2A] mb-8 shadow-inner">
+                  <span className="material-symbols-outlined text-[#F08C00] text-3xl">gpp_good</span>
+                </div>
+                <h3 className="font-sans text-2xl font-semibold mb-4 text-[#e5e2e1]">Industrial Security</h3>
+                <p className="font-sans text-sm text-[#a3a1a0] leading-relaxed mb-8">
+                  Your intellectual property is sacred. AES-256-GCM encryption at rest and in transit.
+                </p>
+              </div>
+              
+              {/* Security Visualization Mockup */}
+              <div className="mt-auto relative h-32 w-full border border-[#2A2A2A]/50 bg-[#0A0A0A] rounded-lg overflow-hidden flex items-center justify-center">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(240,140,0,0.1)_0%,transparent_70%)]"></div>
+                <div className="relative w-16 h-16 border-2 border-[#F08C00] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(240,140,0,0.2)]">
+                   <div className="absolute inset-0 rounded-full border-2 border-[#F08C00] animate-ping opacity-20"></div>
+                   <span className="material-symbols-outlined text-[#F08C00] text-3xl">lock</span>
+                </div>
+                {/* Simulated encrypted data stream */}
+                <div className="absolute left-0 right-0 top-4 h-px bg-gradient-to-r from-transparent via-[#F08C00]/30 to-transparent"></div>
+                <div className="absolute left-0 right-0 bottom-4 h-px bg-gradient-to-r from-transparent via-[#F08C00]/30 to-transparent"></div>
+              </div>
             </div>
+          </div>
 
-            <div className="md:col-span-4 bg-[#1c1b1b] border border-[#2A2A2A] rounded-xl p-10 micro-shadow rim-light">
-              <span className="material-symbols-outlined text-[#F08C00] mb-4 text-3xl">groups</span>
-              <h4 className="font-mono text-xs font-medium text-[#e5e2e1] mb-3 uppercase tracking-widest">Team Context</h4>
-              <p className="font-mono text-xs text-[#b7b5b4] leading-relaxed">Shared insights allow new hires to onboard 4x faster by querying the existing knowledge graph.</p>
+          {/* Three Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#121212] border border-[#2A2A2A] rounded-xl p-8 micro-shadow rim-light hover:-translate-y-1 transition-transform">
+              <span className="material-symbols-outlined text-[#F08C00] mb-5 text-3xl">group_work</span>
+              <h4 className="font-sans text-lg font-semibold text-[#e5e2e1] mb-2">Collaborative Intelligence</h4>
+              <p className="font-sans text-sm text-[#8a8887] leading-relaxed">Share context across your team. Accelerate onboarding and eliminate institutional knowledge silos instantly.</p>
             </div>
-
-            <div className="md:col-span-4 bg-[#1c1b1b] border border-[#2A2A2A] rounded-xl p-10 micro-shadow rim-light">
-              <span className="material-symbols-outlined text-[#F08C00] mb-4 text-3xl">terminal</span>
-              <h4 className="font-mono text-xs font-medium text-[#e5e2e1] mb-3 uppercase tracking-widest">CLI Ready</h4>
-              <p className="font-mono text-xs text-[#b7b5b4] leading-relaxed">Integrated with your favorite terminals. Query your code without ever leaving the dev environment.</p>
+            <div className="bg-[#121212] border border-[#2A2A2A] rounded-xl p-8 micro-shadow rim-light hover:-translate-y-1 transition-transform">
+              <span className="material-symbols-outlined text-[#F08C00] mb-5 text-3xl">commit</span>
+              <h4 className="font-sans text-lg font-semibold text-[#e5e2e1] mb-2">Git-Native Insights</h4>
+              <p className="font-sans text-sm text-[#8a8887] leading-relaxed">Direct integration with your repositories. The semantic graph updates automatically with every commit.</p>
+            </div>
+            <div className="bg-[#121212] border border-[#2A2A2A] rounded-xl p-8 micro-shadow rim-light hover:-translate-y-1 transition-transform">
+              <span className="material-symbols-outlined text-[#F08C00] mb-5 text-3xl">terminal</span>
+              <h4 className="font-sans text-lg font-semibold text-[#e5e2e1] mb-2">Terminal & IDE Ready</h4>
+              <p className="font-sans text-sm text-[#8a8887] leading-relaxed">Access the intelligence engine directly from your CLI or through our upcoming native VS Code extension.</p>
             </div>
           </div>
         </section>
 
-        {/* Contextual Visual Section */}
-        <section id="architecture" className="py-24 relative border-t border-[#2A2A2A]/20">
-          <div className="max-w-[1440px] mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="font-serif text-3xl font-bold mb-8">The Architectural Brain of Your Workflow</h2>
-              <div className="space-y-8">
-
-                {/* Updated Item 01 */}
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full border border-[#ffb874]/40 flex items-center justify-center font-mono text-xs text-[#F08C00]">01</div>
+        {/* The Architectural Brain Section */}
+        <section id="architecture" className="py-32 relative border-t border-[#2A2A2A]/20 bg-[#0A0A0A]">
+          <div className="max-w-[1440px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left: Text Content */}
+            <div className="order-2 lg:order-1">
+              <h2 className="font-serif text-4xl font-bold mb-10 text-[#e5e2e1]">The Architectural Brain of Your Workflow</h2>
+              
+              <div className="space-y-12">
+                <div className="flex gap-6 group">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg border border-[#2A2A2A] bg-[#121212] flex items-center justify-center font-mono text-sm text-[#F08C00] group-hover:border-[#F08C00]/50 transition-colors">01</div>
                   <div>
-                    <h5 className="text-base font-bold text-[#e5e2e1] mb-2">Semantic Code Chat</h5>
-                    <p className="text-base text-[#b7b5b4] leading-relaxed">Stop manually grepping through thousands of files. Ask complex questions in plain English and get precise explanations backed by exact code snippets.</p>
+                    <h5 className="font-sans text-xl font-semibold text-[#e5e2e1] mb-3">Semantic Code Chat</h5>
+                    <p className="font-sans text-base text-[#8a8887] leading-relaxed">
+                      Stop manually grepping through thousands of files. Ask complex architectural questions in plain English. The engine synthesizes precise answers backed by exact, hyper-linked code snippets from your repository.
+                    </p>
                   </div>
                 </div>
 
-                {/* Updated Item 02 */}
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full border border-[#ffb874]/40 flex items-center justify-center font-mono text-xs text-[#F08C00]">02</div>
+                <div className="flex gap-6 group">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg border border-[#2A2A2A] bg-[#121212] flex items-center justify-center font-mono text-sm text-[#F08C00] group-hover:border-[#F08C00]/50 transition-colors">02</div>
                   <div>
-                    <h5 className="text-base font-bold text-[#e5e2e1] mb-2">Dynamic Intent Routing</h5>
-                    <p className="text-base text-[#b7b5b4] leading-relaxed">The engine intelligently adapts to your scope. Ask about the "whole project" for a high-level summary, or query a specific function for localized vector retrieval.</p>
+                    <h5 className="font-sans text-xl font-semibold text-[#e5e2e1] mb-3">Dynamic Intent Routing</h5>
+                    <p className="font-sans text-base text-[#8a8887] leading-relaxed">
+                      The engine intelligently adapts to your scope. Ask about the "whole project" for a high-level summary, or drill down into a specific function for hyper-localized, ultra-fast vector retrieval.
+                    </p>
                   </div>
                 </div>
-
               </div>
             </div>
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#F08C00]/20 to-[#c8c6c5]/20 rounded-xl blur opacity-25 transition duration-1000 group-hover:opacity-50"></div>
-              <div className="relative bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-1 micro-shadow">
-                <img
-                  className="rounded-lg w-full"
-                  alt="A sophisticated digital visualization of a complex neural network merging with a 3D architectural blueprint of software code, rendered in deep charcoals and glowing amber lines."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmhTj3zEzAbFbVYhhUfTaK0U9rAGpPn1MAXQ6S3L_JP4bFiZyMQu8fWUeA_BsguAnWZQYmohVZezv6FCwW5RALIFEhLJa8nJa_aszz10CbvZaVjtZgbUqBxsnT59L-1I20q729RFLNkintKObGy5b5eTzq1fLGCHzi-aqW0iuhp4BjhernATPcD-LgcvUm-DPPv2-r6jVVjd6U1USiLYDhyiyLt_GgH0LQWMFiZDYCpdOm9SOBE4O2"
-                />
+
+            {/* Right: High-Detail Product Visualization Mockup */}
+            <div className="order-1 lg:order-2 relative w-full h-[500px]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#F08C00]/10 to-transparent rounded-2xl blur-2xl"></div>
+              
+              {/* Complex Terminal/Chat Mockup */}
+              <div className="absolute inset-0 bg-[#131313] border border-[#2A2A2A] rounded-xl micro-shadow rim-light overflow-hidden flex flex-col glow-effect">
+                
+                {/* Header */}
+                <div className="h-10 bg-[#080808] border-b border-[#2A2A2A] flex justify-between items-center px-4 shrink-0">
+                  <span className="font-mono text-[10px] text-[#666] tracking-widest">SYS_ID: SEM_TUTOR</span>
+                  <div className="flex gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-[#333]"></div>
+                    <div className="w-2 h-2 rounded-full bg-[#333]"></div>
+                  </div>
+                </div>
+
+                <div className="flex flex-1 overflow-hidden">
+                  {/* Left Context Panel */}
+                  <div className="w-1/3 border-r border-[#2A2A2A] bg-[#0A0A0A] p-4 hidden sm:flex flex-col gap-4">
+                    <div className="h-24 border border-[#2A2A2A] rounded bg-[#121212] p-3">
+                       <span className="font-mono text-[9px] text-[#F08C00] uppercase block mb-2">Active Context</span>
+                       <div className="font-mono text-[10px] text-[#8a8887] line-clamp-3">
+                         Found 14 references to <span className="text-[#e5e2e1]">AuthMiddleware</span> across 3 core modules. High confidence in vector space.
+                       </div>
+                    </div>
+                    {/* Mini Graph */}
+                    <div className="flex-1 border border-[#2A2A2A] rounded bg-[#121212] relative overflow-hidden flex items-center justify-center p-2">
+                       <div className="absolute top-2 left-2 font-mono text-[9px] text-[#666]">Dependency Graph</div>
+                       <svg className="w-full h-full opacity-30" viewBox="0 0 100 100">
+                         <circle cx="50" cy="30" r="4" fill="#F08C00" />
+                         <circle cx="20" cy="70" r="3" fill="#8a8887" />
+                         <circle cx="80" cy="70" r="3" fill="#8a8887" />
+                         <line x1="50" y1="34" x2="20" y2="67" stroke="#666" strokeWidth="0.5" />
+                         <line x1="50" y1="34" x2="80" y2="67" stroke="#666" strokeWidth="0.5" />
+                       </svg>
+                    </div>
+                  </div>
+
+                  {/* Chat Interface */}
+                  <div className="flex-1 flex flex-col bg-[#121212]">
+                    <div className="flex-1 p-4 space-y-4 overflow-hidden">
+                      {/* User Bubble */}
+                      <div className="flex justify-end">
+                        <div className="bg-[#2A2A2A] text-[#e5e2e1] font-sans text-xs p-3 rounded-lg max-w-[80%] border border-[#333]">
+                          How does the authentication flow handle expired tokens?
+                        </div>
+                      </div>
+                      {/* AI Bubble */}
+                      <div className="flex justify-start">
+                        <div className="bg-[#1A1A1A] text-[#c8c6c5] font-sans text-xs p-3 rounded-lg max-w-[90%] border border-[#F08C00]/30 shadow-[0_0_10px_rgba(240,140,0,0.05)]">
+                          <p className="mb-2">The token verification intercepts requests in <span className="font-mono text-[#F08C00]">middleware.ts</span>.</p>
+                          <div className="bg-[#0A0A0A] border border-[#2A2A2A] p-2 rounded font-mono text-[10px] text-[#8a8887]">
+                            <span className="text-[#D47A00]">if</span> (token.isExpired()) {"{"}<br/>
+                            &nbsp;&nbsp;<span className="text-[#D47A00]">return</span> reauthenticate(req);<br/>
+                            {"}"}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Input box */}
+                    <div className="h-12 border-t border-[#2A2A2A] bg-[#0A0A0A] flex items-center px-4 gap-3 shrink-0">
+                      <span className="material-symbols-outlined text-[#F08C00] text-[16px]">chevron_right</span>
+                      <div className="flex-1 h-1 bg-[#2A2A2A] rounded overflow-hidden">
+                         <div className="w-1/3 h-full bg-[#F08C00] animate-pulse"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#080808] border-t border-[#2A2A2A]/20 pt-16 pb-6">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
+      {/* Clean, Well-Spaced Footer */}
+      <footer className="bg-[#080808] border-t border-[#2A2A2A]/40 pt-20 pb-8">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
             <div className="md:col-span-1">
               <div className="flex items-center gap-3 mb-6">
-                <div className="bg-[#f08c00] p-1.5 rounded-sm amber-gradient">
-                  <span className="material-symbols-outlined text-[16px] text-[#593000]" style={{ fontVariationSettings: "'FILL' 1" }}>terminal</span>
+                <div className="bg-[#f08c00] p-1.5 rounded-md amber-gradient">
+                  <span className="material-symbols-outlined text-[16px] text-[#3A1D00]" style={{ fontVariationSettings: "'FILL' 1" }}>account_tree</span>
                 </div>
-                <span className="font-serif text-lg font-bold text-[#e5e2e1]">SemanticTutor</span>
+                <span className="font-serif text-xl font-bold text-[#e5e2e1]">SemanticTutor</span>
               </div>
-              <p className="font-mono text-xs text-[#b7b5b4] leading-relaxed">The master workshop for high-output engineering teams.</p>
+              <p className="font-sans text-sm text-[#8a8887] leading-relaxed max-w-xs">
+                The master workshop for high-output engineering teams. Understand any architecture instantly.
+              </p>
             </div>
 
-            <div className="grid grid-cols-2 md:col-span-3 gap-6">
+            <div className="grid grid-cols-2 md:col-span-3 gap-8 md:ml-auto md:w-2/3">
               <div className="flex flex-col gap-4">
-                <span className="font-mono text-xs text-[#e5e2e1] font-bold uppercase tracking-widest">Product</span>
-                <Link className="font-mono text-xs text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#">Documentation</Link>
-                <Link className="font-mono text-xs text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#">Integrations</Link>
+                <span className="font-mono text-[11px] text-[#e5e2e1] font-semibold uppercase tracking-widest mb-2">Product</span>
+                <Link className="font-sans text-sm text-[#8a8887] hover:text-[#F08C00] transition-colors" href="#">Documentation</Link>
+                <Link className="font-sans text-sm text-[#8a8887] hover:text-[#F08C00] transition-colors" href="#">Integrations</Link>
+                <Link className="font-sans text-sm text-[#8a8887] hover:text-[#F08C00] transition-colors" href="#">Enterprise</Link>
               </div>
               <div className="flex flex-col gap-4">
-                <span className="font-mono text-xs text-[#e5e2e1] font-bold uppercase tracking-widest">Company</span>
-                <Link className="font-mono text-xs text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#">Privacy Policy</Link>
-                <Link className="font-mono text-xs text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#">Terms of Service</Link>
-                <Link className="font-mono text-xs text-[#b7b5b4] hover:text-[#F08C00] transition-colors" href="#">Status</Link>
+                <span className="font-mono text-[11px] text-[#e5e2e1] font-semibold uppercase tracking-widest mb-2">Company</span>
+                <Link className="font-sans text-sm text-[#8a8887] hover:text-[#F08C00] transition-colors" href="#">Privacy Policy</Link>
+                <Link className="font-sans text-sm text-[#8a8887] hover:text-[#F08C00] transition-colors" href="#">Terms of Service</Link>
+                <Link className="font-sans text-sm text-[#8a8887] hover:text-[#F08C00] transition-colors" href="#">System Status</Link>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center w-full pt-6 gap-6 border-t border-[#2A2A2A]/10">
-            <span className="font-mono text-[10px] text-[#393a3a] tracking-widest uppercase">© 2024 SemanticTutor. Precision Engineering for the AI Age.</span>
+          <div className="flex flex-col md:flex-row justify-between items-center w-full pt-8 gap-6 border-t border-[#2A2A2A]">
+            <span className="font-mono text-[10px] text-[#666] tracking-widest uppercase">
+              © 2024 SemanticTutor. Engineered for Precision.
+            </span>
             <div className="flex gap-6">
-              <Link className="text-[#393a3a] hover:text-[#F08C00] transition-colors" href="#"><span className="material-symbols-outlined">public</span></Link>
-              <Link className="text-[#393a3a] hover:text-[#F08C00] transition-colors" href="#"><span className="material-symbols-outlined">code</span></Link>
-              <Link className="text-[#393a3a] hover:text-[#F08C00] transition-colors" href="#"><span className="material-symbols-outlined">alternate_email</span></Link>
+              <Link className="text-[#666] hover:text-[#F08C00] transition-colors" href="#"><span className="material-symbols-outlined text-[20px]">public</span></Link>
+              <Link className="text-[#666] hover:text-[#F08C00] transition-colors" href="#"><span className="material-symbols-outlined text-[20px]">code</span></Link>
+              <Link className="text-[#666] hover:text-[#F08C00] transition-colors" href="#"><span className="material-symbols-outlined text-[20px]">alternate_email</span></Link>
             </div>
           </div>
         </div>

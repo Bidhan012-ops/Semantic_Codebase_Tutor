@@ -9,6 +9,73 @@ type Message = {
   content: string;
 };
 
+const DashboardStyles = () => (
+  <style dangerouslySetInnerHTML={{ __html: `
+    @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+    
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Geist', sans-serif;
+        overflow: hidden;
+    }
+    .industrial-border {
+        border: 1px solid #2A2A2A;
+    }
+    .amber-glow:focus {
+        outline: none;
+        border-color: #f08c00;
+        box-shadow: 0 0 8px rgba(240, 140, 0, 0.2);
+    }
+    .btn-primary-gradient {
+        background: linear-gradient(to bottom, #F08C00, #D47A00);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    .logo-mark {
+        width: 32px;
+        height: 32px;
+        background: #f08c00;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        color: #0D0D0D;
+        font-size: 20px;
+    }
+    .code-block {
+        background-color: #080808;
+        border-left: 2px solid #f08c00;
+    }
+    .scanlines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        background-size: 100% 4px, 3px 100%;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.1;
+    }
+    .message-stream::-webkit-scrollbar {
+        width: 6px;
+    }
+    .message-stream::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .message-stream::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 4px;
+    }
+    .font-label-sm { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; line-height: 1; }
+    .font-body-md { font-family: 'Geist', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.5; }
+    .font-headline-md { font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 600; line-height: 1.3; }
+  `}} />
+);
+
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -74,76 +141,13 @@ export default function ChatInterface() {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-        
-        body {
-            background-color: #131313;
-            color: #e5e2e1;
-            font-family: 'Geist', sans-serif;
-            overflow: hidden;
-        }
-        .industrial-border {
-            border: 1px solid #2A2A2A;
-        }
-        .amber-glow:focus {
-            outline: none;
-            border-color: #f08c00;
-            box-shadow: 0 0 8px rgba(240, 140, 0, 0.2);
-        }
-        .btn-primary-gradient {
-            background: linear-gradient(to bottom, #F08C00, #D47A00);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-        .logo-mark {
-            width: 32px;
-            height: 32px;
-            background: #f08c00;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #0D0D0D;
-            font-size: 20px;
-        }
-        .code-block {
-            background-color: #080808;
-            border-left: 2px solid #f08c00;
-        }
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.1;
-        }
-        .message-stream::-webkit-scrollbar {
-            width: 6px;
-        }
-        .message-stream::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .message-stream::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
-        }
-        .font-label-sm { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; line-height: 1; }
-        .font-body-md { font-family: 'Geist', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.5; }
-        .font-headline-md { font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 600; line-height: 1.3; }
-      `}} />
+      <DashboardStyles />
 
       <div className="flex flex-col h-screen overflow-hidden bg-[#131313]">
         <div className="scanlines"></div>
         
         {/* Top Navigation Bar */}
-        <header className="bg-[#131313] border-b border-[#554334]/30 flex justify-between items-center w-full px-4 py-2 sticky top-0 z-40 h-14">
+        <header className="bg-[#131313] border-b border-[#554334]/30 flex justify-between items-center w-full px-4 py-2 sticky top-0 z-40 shrink-0 min-h-[56px]">
           <div className="flex items-center gap-4">
             <div className="logo-mark font-label-sm">/</div>
             <h1 className="font-headline-md text-[#e5e2e1] hidden sm:block">Semantic Codebase Tutor</h1>
@@ -330,7 +334,7 @@ export default function ChatInterface() {
         </main>
 
         {/* Footer */}
-        <footer className="bg-[#0e0e0e] border-t border-[#554334]/20 py-2 px-4 flex justify-between items-center h-8">
+        <footer className="bg-[#0e0e0e] border-t border-[#554334]/20 py-2 px-4 flex justify-between items-center h-8 shrink-0 min-h-[32px]">
           <div className="flex items-center gap-6">
             <span className="font-label-sm text-[#dbc2ae]">© 2024 SemanticTutor</span>
             <span className="font-label-sm text-[#554334] hidden md:inline">PRECISION ENGINEERING FOR AI</span>
