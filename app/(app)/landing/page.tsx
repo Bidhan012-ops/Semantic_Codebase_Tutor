@@ -1,9 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+
+const LandingStyles = React.memo(() => (
+  <style dangerouslySetInnerHTML={{
+    __html: `
+    @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=JetBrains+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+    .font-serif { font-family: 'Source Serif 4', serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+    }
+    
+    .industrial-border {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .input-glow:focus {
+        outline: none;
+        border-color: #f08c00;
+        box-shadow: 0 0 0 1px #f08c00;
+    }
+    .scanlines {
+        background: linear-gradient(
+            to bottom,
+            transparent 50%,
+            rgba(0, 0, 0, 0.1) 51%
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+    }
+    
+    @keyframes profile-shimmer {
+        100% {
+            transform: translateX(200%);
+        }
+    }
+  `}} />
+));
 
 export default function Landing() {
   const { data: session, update } = useSession();
@@ -39,42 +78,7 @@ export default function Landing() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#131313] text-white font-serif overflow-hidden selection:bg-[#f08c00]/30 selection:text-white relative">
-      <style dangerouslySetInnerHTML={{
-        __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=JetBrains+Mono:wght@400;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-
-        .font-serif { font-family: 'Source Serif 4', serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        
-        .industrial-border {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .input-glow:focus {
-            outline: none;
-            border-color: #f08c00;
-            box-shadow: 0 0 0 1px #f08c00;
-        }
-        .scanlines {
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 0, 0, 0.1) 51%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-        }
-        
-        @keyframes profile-shimmer {
-            100% {
-                transform: translateX(200%);
-            }
-        }
-      `}} />
+      <LandingStyles />
 
       {/* Background Decorations */}
       <div className="fixed inset-0 scanlines opacity-20 z-0"></div>

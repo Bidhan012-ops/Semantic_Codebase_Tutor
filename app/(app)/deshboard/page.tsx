@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getRepoMap } from "@/lib/repomap";
 
@@ -9,7 +9,7 @@ type Message = {
   content: string;
 };
 
-const DashboardStyles = () => (
+const DashboardStyles = React.memo(() => (
   <style dangerouslySetInnerHTML={{ __html: `
     @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
@@ -74,7 +74,7 @@ const DashboardStyles = () => (
     .font-body-md { font-family: 'Geist', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.5; }
     .font-headline-md { font-family: 'Source Serif 4', serif; font-size: 24px; font-weight: 600; line-height: 1.3; }
   `}} />
-);
+));
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
