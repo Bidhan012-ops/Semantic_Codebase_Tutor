@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account Verification | SemanticTutor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Geist:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-primary-fixed": "#2d1600",
+                    "tertiary-container": "#a4a4a4",
+                    "on-primary": "#4b2800",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary": "#c8c6c5",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "surface": "#131313",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary": "#c7c6c6",
+                    "tertiary-fixed": "#e3e2e2",
+                    "surface-container-highest": "#353534",
+                    "primary-fixed": "#ffdcbf",
+                    "error": "#ffb4ab",
+                    "on-secondary-container": "#b7b5b4",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-variant": "#353534",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary": "#ffb874",
+                    "on-tertiary": "#2f3131",
+                    "surface-bright": "#3a3939",
+                    "primary-fixed-dim": "#ffb874",
+                    "outline": "#a38d7a",
+                    "secondary-fixed": "#e5e2e1",
+                    "outline-variant": "#554334",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-surface-variant": "#dbc2ae",
+                    "primary-container": "#f08c00",
+                    "on-background": "#e5e2e1",
+                    "on-secondary": "#313030",
+                    "inverse-primary": "#8c5000",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary-container": "#474746",
+                    "on-tertiary-container": "#393a3a",
+                    "on-primary-container": "#593000",
+                    "inverse-on-surface": "#313030",
+                    "error-container": "#93000a",
+                    "background": "#131313",
+                    "surface-container": "#201f1f",
+                    "tertiary-fixed-dim": "#c7c6c6",
+                    "surface-tint": "#ffb874",
+                    "on-tertiary-fixed-variant": "#464747",
+                    "on-primary-fixed-variant": "#6a3b00",
+                    "on-error": "#690005",
+                    "surface-dim": "#131313"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "xl": "64px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "sm": "16px",
+                    "margin-safe": "32px",
+                    "lg": "40px",
+                    "md": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["\"Source Serif 4\""],
+                    "body-lg": ["Geist"],
+                    "headline-md": ["\"Source Serif 4\""],
+                    "body-md": ["Geist"],
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg-mobile": ["\"Source Serif 4\""]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        
+        .industrial-card {
+            background-color: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            box-shadow: 0 4px 24px -2px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .industrial-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+        }
+
+        .input-recessed {
+            background-color: #080808;
+            border: 1px solid #2A2A2A;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-recessed:focus {
+            border-color: #F08C00;
+            outline: none;
+            box-shadow: 0 0 0 1px rgba(240, 140, 0, 0.2);
+        }
+
+        .btn-machined {
+            background: linear-gradient(180deg, #F08C00 0%, #D47A00 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .btn-machined:active {
+            transform: translateY(1px);
+            background: linear-gradient(180deg, #D47A00 0%, #B86A00 100%);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center px-gutter py-xl relative">
+<!-- Metadata (System Diagnostics) - Matched to Login Page Style -->
+<div class="fixed top-margin-safe left-margin-safe z-50 font-label-sm text-[10px] text-on-surface-variant/40 space-y-1 opacity-60 pointer-events-none">
+<div class="flex items-center gap-xs">
+<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+<span>SYSTEM.ACTIVE_SESSION: 0x8F22</span>
+</div>
+<div>COORD: 40.7128° N, 74.0060° W</div>
+<div>LOAD_SEQ: SEMANTIC_CORE_V4.2</div>
+</div>
+<div class="fixed top-margin-safe right-margin-safe z-50 font-label-sm text-[10px] text-on-surface-variant/40 text-right space-y-1 opacity-60 pointer-events-none">
+<div>ENCR_STDL: AES-256-GCM</div>
+<div class="text-primary/60">NODE_STAT: VERIFICATION_PENDING</div>
+<div>LATENCY: 14ms</div>
+</div>
+<!-- Verification Card -->
+<div class="industrial-card w-full max-w-[440px] p-lg md:p-xl rounded-lg z-10" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+<!-- Branding Header -->
+<div class="flex flex-col items-center text-center mb-xl">
+<div class="bg-primary-container w-12 h-12 flex items-center justify-center rounded-lg shadow-lg mb-md">
+<span class="material-symbols-outlined text-on-primary-container text-2xl">shield_lock</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-xs">Verify Your Account</h1>
+<p class="font-body-md text-body-md text-on-secondary-fixed-variant opacity-80">Please enter the verification code sent to your email.</p>
+</div>
+<!-- Verification Form -->
+<form class="space-y-md" onsubmit="event.preventDefault(); alert('Verifying code...');">
+<!-- Code Field -->
+<div class="space-y-xs">
+<div class="flex justify-between items-end">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs" for="auth_code">
+<span class="material-symbols-outlined text-[14px]">key</span>
+                        @ SYSTEM.AUTH_CODE
+                    </label>
+<span class="font-label-sm text-[10px] text-on-surface-variant/40">6-DIGIT_SHA</span>
+</div>
+<input class="input-recessed w-full px-md py-sm font-label-sm text-on-surface rounded-lg text-center tracking-[0.75rem] text-xl placeholder:opacity-20" id="auth_code" maxlength="6" name="auth_code" placeholder="000000" style="font-family: 'JetBrains Mono', monospace;" type="text"/>
+</div>
+<!-- Action Button -->
+<button class="btn-machined w-full py-sm px-md rounded-lg font-body-md font-bold text-on-primary-container mt-sm hover:brightness-110 transition-all flex items-center justify-center gap-xs uppercase tracking-widest" type="submit">
+                Verify
+                <span class="material-symbols-outlined">bolt</span>
+</button>
+</form>
+<!-- Footer Links -->
+<div class="mt-xl pt-lg border-t border-outline-variant text-center space-y-md">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors block w-full">
+                RESEND_REQUEST (60s)
+            </button>
+<p class="font-body-md text-body-md text-on-surface-variant">
+<a class="hover:text-on-surface transition-colors flex items-center justify-center gap-xs" href="#">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    BACK_TO_LOGIN
+                </a>
+</p>
+</div>
+</div>
+<!-- Decorative Engineering Elements -->
+<div class="hidden lg:block absolute bottom-gutter left-gutter font-label-sm text-[10px] text-on-secondary-fixed-variant space-y-1 opacity-20 select-none">
+<div>ST_AUTH_V2 // BLK_CHAIN_ENABLED</div>
+<div>(c) 2024 SEMANTICTUTOR_CORE</div>
+</div>
+</main>
+<script>
+    // Micro-interaction for the verification card (matched from login)
+    document.addEventListener('mousemove', (e) => {
+        const card = document.querySelector('.industrial-card');
+        if (!card) return;
+        
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        if (x > -100 && x < rect.width + 100 && y > -100 && y < rect.height + 100) {
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 60;
+            const rotateY = (centerX - x) / 60;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        } else {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        }
+    });
+
+    // Auto-focus and numeric constraint
+    window.addEventListener('load', () => {
+        const input = document.getElementById('auth_code');
+        input.focus();
+        input.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    });
+</script>
+</body></html>
