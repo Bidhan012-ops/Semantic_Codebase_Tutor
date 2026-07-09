@@ -136,6 +136,14 @@ export default function Landing() {
           {/* Top Decorative Accent */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-[#f08c00]"></div>
 
+          {isLoading && (
+            <div className="absolute top-4 left-0 w-full text-center px-4 animate-pulse">
+              <p className="text-[#f08c00] font-mono text-[10px] uppercase tracking-widest">
+                Please wait, it may take some time during the onboarding...
+              </p>
+            </div>
+          )}
+
           {/* Header Section */}
           <div className="text-center mb-12">
             <div className="inline-block bg-[#f08c00] w-12 h-12 mb-8 flex items-center justify-center">
