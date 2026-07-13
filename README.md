@@ -1,5 +1,7 @@
 # SemanticTutor 🧠⚙️
 
+**Live Demo:** [https://semantic-codebase-tutor.vercel.app/](https://semantic-codebase-tutor.vercel.app/)
+
 **SemanticTutor** is an AI-powered, industrial-grade codebase analysis platform designed for modern engineering teams. By providing a public GitHub repository URL, SemanticTutor automatically ingests, vectors, and comprehends your codebase, allowing you to have deep, semantic conversations with your architecture. 
 
 It features a high-fidelity "Industrial Precision" UI, emphasizing clarity, deep-tech aesthetics, and highly responsive workflows.
